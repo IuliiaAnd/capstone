@@ -1,0 +1,108 @@
+{% extends "yinyang/layout.html" %}
+{% load static %}
+{% block body %}
+{% block additional_styles %}
+  <style>
+    .body {
+      background-image: none;
+      background: radial-gradient(circle, rgba(240,240,240,1) 20%, rgb(70, 70, 70) 100%);
+      height: 100%;
+    }
+  </style>
+{% endblock %}
+<div id="profile-flex">
+  <div class="profile-card-flex">
+    <div id="profile-card">      
+      <button type="button" id="edit-image-btn" data-user-id="{{ user.id }}">
+        <i class="bi bi-pencil-square"></i>
+      </button>   
+
+      <div class="profile-pic">
+        <img src="{% if user.image != 'fallback.png' %}{{ user.image.url }}{% else %}{% static 'yinyang/styles/fallback.png' %}{% endif %}" alt="Profile Image">        
+      </div>      
+      <div>Username: {{ user.username }} </div>
+      <div>Date Joined: {{ user.date_joined|date:"d M Y" }}</div>
+    </div>       
+  </div> 
+  
+  <!-- Modal for edit profile image -->
+  <div class="modal fade" id="edit-image-modal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Select New Image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="edit-image-form" action="{% url 'edit_profile_pic' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="upload-image-inputs">
+                <input type="file" name="image" accept="image/*">
+                <input type="submit" class="btn btn-light" name="submit_button" value="Save">
+                <button type="button" class="btn btn-light cancel-btn" data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </form>          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <h3>
+    Badges
+  </h3>
+  
+  <div id="rewards-list">
+    {% for badge in all_badges %}
+      <div class="r-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="7rem" height="7rem" fill="currentColor" class="bi bi-yin-yang {% if badge.description in earned_badges %}earned{% else %}unearned{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ badge.description }}" viewBox="0 0 16 16">
+          <path d="M9.167 4.5a1.167 1.167 0 1 1-2.334 0 1.167 1.167 0 0 1 2.334 0"/>
+          <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 0 1-7-7m7 4.667a1.167 1.167 0 1 1 0-2.334 1.167 1.167 0 0 1 0 2.334"/>
+        </svg>
+        <span>{{ badge.name }}</span>
+      </div>
+    {% endfor %}
+  </div>
+
+  <h4><a href="{% url 'completed_goals_list' user.id%}" style="color: rgb(0, 0, 0);">My completed goals<i class="bi bi-card-list"></i></a></h4>  
+  
+  <h3>
+    Sleep better
+  </h3>
+  
+  <div id="sleep-flex">
+    <div class="sleep-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="sleep-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="sleep-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="sleep-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="sleep-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="sleep-tile"><i class="bi bi-caret-right-square"></i></div>
+  </div>
+
+  <h3>
+    Stress less
+  </h3>
+  
+  <div id="stress-flex">
+    <div class="stress-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="stress-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="stress-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="stress-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="stress-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="stress-tile"><i class="bi bi-caret-right-square"></i></div>
+  </div>
+
+  
+  <h3>
+    Fitness
+  </h3>
+ 
+  <div id="fitness-flex">
+    <div class="fitness-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="fitness-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="fitness-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="fitness-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="fitness-tile"><i class="bi bi-caret-right-square"></i></div>
+    <div class="fitness-tile"><i class="bi bi-caret-right-square"></i></div>
+  </div>
+</div>
+{% endblock %}

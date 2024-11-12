@@ -1,0 +1,26 @@
+{% extends "yinyang/layout.html" %}
+{% load static %}
+{% block body %}
+{% block additional_styles %}
+  <style>
+    body {
+      background-image: url('/static/yinyang/styles/background-dashboard.jpg'); 
+      background-size:cover;
+      background-position:center;       
+      height: 100%;
+    }
+  </style>
+{% endblock %}
+  <div id="list-flex">
+    <div class="list-card-flex">
+      <div class="paper">
+        <h2>My completed goals</h2>
+        <ul>
+          {% for goal in completed_goals %}
+            <li>{{ goal.description }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

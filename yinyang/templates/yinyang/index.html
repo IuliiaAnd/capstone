@@ -1,0 +1,62 @@
+{% extends "yinyang/layout.html" %}
+{% load static %}
+{% block body %}
+{% if user.is_authenticated %}      
+  <div id="negative-form-flex">
+    <div class="module-flex">
+      <h2>What's weighing on your mind today?</h2>
+      
+      <form class="new-thought" action="{% url 'new_negative_thought' %}" method="POST">
+        {% csrf_token %}      
+        <div>
+          {{ nform }}        
+        </div>
+        <input type="hidden" name="thought_type" value="NEGATIVE">
+        <input type="submit" class="submit-btn" name="submit_button" value="SUBMIT">        
+      </form>
+      <button type="button" class="custom-btn" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Is there anything you're struggling to let go of right now? What’s been causing you stress lately?"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+        <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+      </svg>
+      </button>
+    </div>  
+  </div> 
+  
+  <div id="positive-form-flex" style="display: none;">
+    <div class="module-flex">
+      <h2>What did you do, or what happened, that brightened your mood</h2>
+      <form class="new-thought" action="{% url 'new_positive_thought' %}" method="POST">
+        {% csrf_token %}      
+        <div>
+          {{ pform }}        
+        </div>
+        <input type="hidden" name="thought_type" value="POSITIVE">
+        <input type="submit" class="submit-btn" name="submit_button" value="SUBMIT">
+      </form>
+      <button type="button" class="custom-btn" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Is there anything you did that elevated your mood? or did something positive happend in your life recently?Even taking care of yourself is a positive thing"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+        <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+      </svg>
+      </button>
+    </div>  
+  </div>
+  <div class="rebound" style="display: none;">
+    <h4>Success!</h4>
+    <div>Go to <a href="{% url 'dashboard' user.id %}">dashboard</a></div>
+    <div> Submit <a href="{% url 'index' %}">another</a> entry</div>
+  </div>
+
+  <p class="random-quote"></p>
+{% else %}
+  <div class="intro-flex"> 
+    <div class="intro-container">
+      <h3>
+        Welcome to YinYang!
+      </h3>
+      <p class="intro-text">
+        Start your journey towards balanced mental health. In YinYang, we believe in embracing both positive and negative thoughts while focusing on the power of positivity. For each negative thought you log, we'll encourage you to reflect and submit a positive one, helping you to build a habit of positive thinking. Let’s begin with your first thought and start achieving a more balanced mind.
+      </p> 
+    </div>
+  </div> 
+{% endif %}
+{% endblock %}

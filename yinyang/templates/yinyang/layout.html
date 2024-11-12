@@ -1,0 +1,99 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Yin Yang{% endblock %}</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Static CSS -->
+    <link href="{% static 'yinyang/styles/index.css' %}" rel="stylesheet">
+    <link href="{% static 'yinyang/styles/dashboard.css' %}" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link href="{% static 'yinyang/styles/profile.css' %}" rel="stylesheet">
+    <link href="{% static 'yinyang/styles/logs.css' %}" rel="stylesheet">
+    <link href="{% static 'yinyang/styles/completed_goals_list.css' %}" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Playwrite+AU+TAS:wght@100..400&display=swap" rel="stylesheet">
+  </head>
+  <body> 
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+        <a class="navbar-brand" href="{% url 'index' %}">YinYang</a>      
+        <div>
+          <div class="navbar-nav d-flex flex-row">
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a href="{% url 'dashboard' user.id %}" id="dashboard-link"><i class="bi bi-grid-fill nav-icon"></i></a>
+              </li>
+              <li class="nav-item">                   
+                <a class="nav-link sm-scr" href="{% url 'dashboard' user.id %}">Dashboard</a>
+              </li>
+              <li class="nav-item ">
+                <a href="{% url 'profile' user.id %}" id="profile-link"><i class="bi bi-person nav-icon"></i></a>
+              </li>
+              <li class="nav-item">                                                
+                <a class="nav-link sm-scr" href="{% url 'profile' user.id %}">You</a>
+              </li>
+              <li class="nav-item ">
+                <a href="{% url 'index' %}" id="homepage-link"><i class="bi bi-house-door nav-icon"></i></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link sm-scr" href="{% url 'index' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+              </li> 
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+              </li>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>  
+     
+    <main>
+      <div class="body">
+        {% block body %}                
+        {% endblock %}
+      </div>
+    </main>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block page_specific_js %}
+      {% if request.path == '/' %}
+        <script type="module" src="{% static 'yinyang/js/index.js' %}"></script> 
+      {% endif %}
+
+      {% if '/dashboard' in request.path and '/logs' not in request.path %}
+        <script type="module" src="{% static 'yinyang/js/dashboard.js' %}"></script>
+      {% endif %}
+
+      {% if '/logs' in request.path %}
+        <script type="module" src="{% static 'yinyang/js/logs.js' %}"></script>
+      {% endif %}
+
+      {% if '/profile' in request.path %}         
+        <script src="{% static 'yinyang/js/profile.js' %}"></script> 
+      {% endif %}
+    {% endblock %}        
+    <!-- ApexCharts -->        
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- JQuery -->     
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>     
+  </body>    
+</html>
